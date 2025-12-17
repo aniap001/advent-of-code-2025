@@ -9,28 +9,47 @@ Grids and neighbors problem
  **/
 object Day4 {
 
+    private const val EMPTY = '.'
     private const val ROLL = '@'
     private const val FILENAME = "day4"
 
+    private val grid = readDiagram()
+
     fun solvePartOne(): Int {
-        val grid = readDiagram()
-        var rollsCounter = 0
-        // for each item check the 8 adjacent positions
+        var removedRolls = 0
         for (row in grid.indices) {
             for (column in grid[row].indices) {
-                if (grid[row][column] == ROLL && findAdjacentRolls(row, column, grid) < 4)
-                    rollsCounter++
+                if (grid[row][column] == ROLL && countAdjacentRolls(row, column) < 4)
+                    removedRolls++
             }
         }
-        return rollsCounter
+        return removedRolls
     }
 
-    private fun findAdjacentRolls(row: Int, column: Int, grid: Array<CharArray>): Int {
+    fun solvePartTwo(): Int {
+        var removedRollsTotal = 0
+        do {
+            var removedRollsThisRound = 0
+            for (row in grid.indices) {
+                for (column in grid[row].indices) {
+                    if (grid[row][column] == ROLL && countAdjacentRolls(row, column) < 4) {
+                        removedRollsThisRound++
+                        grid[row][column] = EMPTY
+                    }
+                }
+            }
+            removedRollsTotal += removedRollsThisRound
+        } while (removedRollsThisRound > 0)
+
+        return removedRollsTotal
+    }
+
+    private fun countAdjacentRolls(row: Int, column: Int): Int {
         var counter = 0
         for ((directionR, directionC) in directions8) {
             val neighbourR = row + directionR
             val neighbourC = column + directionC
-            if (isInBounds(neighbourR, neighbourC, grid)  &&
+            if (isInBounds(neighbourR, neighbourC)  &&
                 grid[neighbourR][neighbourC] == ROLL) {
                 counter++
                 if (counter == 4) return counter
@@ -48,7 +67,6 @@ object Day4 {
     private fun isInBounds(
         row: Int,
         column: Int,
-        grid: Array<CharArray>
     ): Boolean =
         row in grid.indices && column in grid[0].indices
 
