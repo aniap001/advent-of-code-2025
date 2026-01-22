@@ -31,7 +31,7 @@ object Day01 : Day {
     }
 
     override fun solvePartTwo(): Int {
-        val input = File("day1.txt").readLines()
+        val input = readInput("day1")
 
         input.forEach {
             val dir = it.first()
