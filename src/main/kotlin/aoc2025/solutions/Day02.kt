@@ -1,15 +1,15 @@
-package org.example.solutions
+package aoc2025.solutions
 
 import java.io.File
 import kotlin.math.pow
 
-object Day2 {
+object Day02 : Day {
 
-    fun partOne(): Long =
+    override fun solvePartOne(): Long =
         readRanges("day2")
             .sumOf { (min, max) -> sumInvalidIds(min, max, ::isInvalidIdPartOne) }
 
-    fun partTwo(): Long =
+    override fun solvePartTwo(): Long =
         readRanges("day2")
             .sumOf { (min, max) -> sumInvalidIds(min, max, ::isInvalidIdPartTwo) }
 

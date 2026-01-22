@@ -1,13 +1,18 @@
-package org.example.solutions
+package aoc2025.solutions
 
+import java.io.File
+import kotlin.io.path.Path
+import kotlin.io.path.readText
 import kotlin.math.abs
 
 
-object Day1 {
+object Day01 : Day {
     var dial = 50
     var password = 0
 
-    fun partOne(input: List<String>): Int {
+    override fun solvePartOne(): Int {
+
+        val input = readInput("day1")
         input.forEach {
             val dir = it.first()
             val number = it.drop(1).toInt()
@@ -25,7 +30,9 @@ object Day1 {
         return password
     }
 
-    fun partTwo(input: List<String>): Int {
+    override fun solvePartTwo(): Int {
+        val input = File("day1.txt").readLines()
+
         input.forEach {
             val dir = it.first()
             val number = it.drop(1).toInt()
@@ -55,4 +62,7 @@ object Day1 {
         }
         return password
     }
+
+    private fun readInput(name: String) = Path("src/main/resources/$name.txt").readText().trim().lines()
+
 }

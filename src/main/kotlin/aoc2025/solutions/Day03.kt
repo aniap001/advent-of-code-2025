@@ -1,15 +1,17 @@
-package org.example.solutions
+package aoc2025.solutions
 
 import java.io.File
 
-
-/*
+/**
 Assumption: Banks in the input have number of batteries bigger than 12
-*/
-object Day3 {
-    fun solveDay3(nBatteries: Int): Long =
+**/
+object Day03 : Day {
+    override fun solvePartOne() : Long =
         readBanks("day3")
-            .sumOf { bank -> findVoltageTwo(bank, nBatteries) }
+            .sumOf { bank -> findVoltageTwo(bank, 2) }
+    override fun solvePartTwo(): Long =
+        readBanks("day3")
+            .sumOf { bank -> findVoltageTwo(bank, 12) }
 
     fun findVoltageTwo(bank: String, nBatteries: Int): Long {
         val joltage = StringBuilder()

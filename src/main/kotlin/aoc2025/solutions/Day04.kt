@@ -1,4 +1,4 @@
-package org.example.solutions
+package aoc2025.solutions
 
 import java.io.File
 
@@ -7,7 +7,7 @@ import java.io.File
 Grids and neighbors problem
 
  **/
-object Day4 {
+object Day04 : Day {
 
     private const val EMPTY = '.'
     private const val ROLL = '@'
@@ -15,7 +15,7 @@ object Day4 {
 
     private val grid = readDiagram()
 
-    fun solvePartOne(): Int {
+    override fun solvePartOne(): Int {
         var removedRolls = 0
         for (row in grid.indices) {
             for (column in grid[row].indices) {
@@ -26,7 +26,7 @@ object Day4 {
         return removedRolls
     }
 
-    fun solvePartTwo(): Int {
+    override fun solvePartTwo(): Int {
         var removedRollsTotal = 0
         do {
             var removedRollsThisRound = 0
