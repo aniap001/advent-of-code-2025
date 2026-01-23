@@ -27,13 +27,7 @@ object Day05 : Day {
                 mergedRanges[mergedRanges.lastIndex] = updatedRange
             }
         }
-
-        var count = 0L
-        mergedRanges.forEach {
-            val num = it.last - it.first + 1
-            count += num
-        }
-        return count
+        return mergedRanges.sumOf { it.last - it.first + 1 }
     }
 
     private fun readRanges(input: List<String>) : List<LongRange> {
