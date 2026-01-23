@@ -26,4 +26,10 @@ class Day05Test {
         Assertions.assertEquals(3, result)
     }
 
+    @Test
+    fun solvePartTwo() {
+        val result = Day05.solvePartTwo(testInput)
+        Assertions.assertEquals(14L, result)
+    }
+
 }
