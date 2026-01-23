@@ -1,15 +1,13 @@
 package aoc2025.solutions
 
-import java.io.File
-
 object Day05 : Day {
 
-    override fun solvePartOne(): Number {
-        val input = readInput()
+    override fun solvePartOne(input: List<String>): Number {
         val ranges = input.takeWhile { it.isNotBlank() }
                           .map {
-                              val (start, end) = it.split("-").map(String::toLong)
-                              start..end // returns LongRange(start, end)
+                              val (start, end) = Regex("""(\d+)-(\d+)""").find(it)?.destructured
+                                  ?: throw IllegalArgumentException("Invalid line format: $it")
+                              start.toLong()..end.toLong() // returns LongRange(start, end)
                           }
         val ingredientIds = input.dropWhile { it.isNotBlank() }
                                 .drop(1)
@@ -21,13 +19,8 @@ object Day05 : Day {
         }
     }
 
-    override fun solvePartTwo(): Number {
+    override fun solvePartTwo(input: List<String>): Number {
         TODO("Not yet implemented")
     }
 
-
-    private fun readInput() : List<String> {
-        return File("src/main/resources/day5.txt")
-            .readLines()
-    }
 }

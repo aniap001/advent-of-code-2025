@@ -6,12 +6,10 @@ import java.io.File
 Assumption: Banks in the input have number of batteries bigger than 12
 **/
 object Day03 : Day {
-    override fun solvePartOne() : Long =
-        readBanks("day3")
-            .sumOf { bank -> findVoltageTwo(bank, 2) }
-    override fun solvePartTwo(): Long =
-        readBanks("day3")
-            .sumOf { bank -> findVoltageTwo(bank, 12) }
+    override fun solvePartOne(input : List<String>) : Long =
+        input.sumOf { bank -> findVoltageTwo(bank, 2) }
+    override fun solvePartTwo(input : List<String>): Long =
+        input.sumOf { bank -> findVoltageTwo(bank, 12) }
 
     fun findVoltageTwo(bank: String, nBatteries: Int): Long {
         val joltage = StringBuilder()
@@ -37,9 +35,4 @@ object Day03 : Day {
         }
         return joltage.toString().toLong()
     }
-
-    fun readBanks(filename: String): List<String> =
-        File("src/main/resources/$filename.txt")
-            .readLines()
-
 }

@@ -11,11 +11,11 @@ object Day04 : Day {
 
     private const val EMPTY = '.'
     private const val ROLL = '@'
-    private const val FILENAME = "day4"
 
-    private val grid = readDiagram()
+    private var grid: Array<CharArray> = emptyArray()
 
-    override fun solvePartOne(): Int {
+    override fun solvePartOne(input: List<String>): Int {
+        this.grid = readDiagram(input)
         var removedRolls = 0
         for (row in grid.indices) {
             for (column in grid[row].indices) {
@@ -26,7 +26,8 @@ object Day04 : Day {
         return removedRolls
     }
 
-    override fun solvePartTwo(): Int {
+    override fun solvePartTwo(input : List<String>): Int {
+        this.grid = readDiagram(input)
         var removedRollsTotal = 0
         do {
             var removedRollsThisRound = 0
@@ -71,9 +72,8 @@ object Day04 : Day {
         row in grid.indices && column in grid[0].indices
 
 
-    private fun readDiagram(): Array<CharArray> =
-        File("src/main/resources/$FILENAME.txt")
-            .readLines()
+    private fun readDiagram(input: List<String>): Array<CharArray> =
+        input
             .map { it.toCharArray() }
             .toTypedArray()
 }

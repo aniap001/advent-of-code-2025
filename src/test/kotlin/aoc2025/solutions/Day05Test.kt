@@ -1,16 +1,29 @@
 package aoc2025.solutions
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class Day05Test {
-    @Test
-    fun solvePartOne() {
-        assertEquals(674, Day05.solvePartOne())
-    }
+
+    val testInput = """
+        3-5
+        10-14
+        16-20
+        12-18
+
+        1
+        5
+        8
+        11
+        17
+        32
+    """.trimIndent().lines()
+
 
     @Test
-    fun solvePartTwo() {
+    fun solvePartOne() {
+        val result = Day05.solvePartOne(testInput)
+        Assertions.assertEquals(3, result)
     }
 
 }

@@ -5,12 +5,12 @@ import kotlin.math.pow
 
 object Day02 : Day {
 
-    override fun solvePartOne(): Long =
-        readRanges("day2")
+    override fun solvePartOne(input : List<String>): Long =
+        readRanges(input)
             .sumOf { (min, max) -> sumInvalidIds(min, max, ::isInvalidIdPartOne) }
 
-    override fun solvePartTwo(): Long =
-        readRanges("day2")
+    override fun solvePartTwo(input : List<String>): Long =
+        readRanges(input)
             .sumOf { (min, max) -> sumInvalidIds(min, max, ::isInvalidIdPartTwo) }
 
     fun sumInvalidIds(
@@ -50,10 +50,8 @@ object Day02 : Day {
         return false
     }
 
-    fun readRanges(filename: String): List<Pair<Long, Long>> =
-        File("src/main/resources/$filename.txt")
-            .readText()
-            .trim()
+    fun readRanges(input: List<String>): List<Pair<Long, Long>> =
+        input.first()
             .split(",")
             .map { it.split("-").let { (a, b) -> a.toLong() to b.toLong() } }
 
