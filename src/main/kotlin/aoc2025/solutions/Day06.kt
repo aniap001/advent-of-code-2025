@@ -24,8 +24,7 @@ object Day06 : Day {
 
         val readNumbers = mutableListOf<Long>()
         val number = StringBuilder()
-        val results = mutableListOf<Long>()
-        for (y in columns-1 downTo 0) {
+        return (columns-1 downTo 0).sumOf { y ->
 
             for (x in input.indices) {
                 val char = input[x].getOrNull(y) ?: ' '
@@ -39,8 +38,8 @@ object Day06 : Day {
                             '+' -> readNumbers.sum()
                             else -> readNumbers.reduce { a, b -> a * b }
                         }
-                        results.add(result)
                         readNumbers.clear()
+                        return@sumOf result
                     }
                     ' ' -> {
                         if (number.isNotEmpty()) {
@@ -53,8 +52,8 @@ object Day06 : Day {
                     }
                 }
             }
+            0L
         }
-        return results.sum()
     }
 
     private fun parseLines(input: List<String>): List<List<Int>> {
