@@ -23,34 +23,37 @@ object Day06 : Day {
         val columns = input.first().length
 
         val readNumbers = mutableListOf<Long>()
-        var number = ""
+        val number = StringBuilder()
         val results = mutableListOf<Long>()
         for (y in columns-1 downTo 0) {
 
             for (x in input.indices) {
-                when (input[x][y]) {
-                    '+' -> {
-                        if (number.isNotEmpty()) readNumbers.add(number.toLong())
-                        number = ""
-                        results.add(readNumbers.sum())
+                val char = input[x].getOrNull(y) ?: ' '
+                when (char) {
+                    '+', '*' -> {
+                        if (number.isNotEmpty()) {
+                            readNumbers.add(number.toString().toLong())
+                            number.clear()
+                        }
+                        val result = when (char) {
+                            '+' -> readNumbers.sum()
+                            else -> readNumbers.reduce { a, b -> a * b }
+                        }
+                        results.add(result)
                         readNumbers.clear()
                     }
-                    '*' -> {
-                        if (number.isNotEmpty()) readNumbers.add(number.toLong())
-                        number = ""
-                        results.add(readNumbers.multiply())
-                        readNumbers.clear()
+                    ' ' -> {
+                        if (number.isNotEmpty()) {
+                            readNumbers.add(number.toString().toLong())
+                            number.clear()
+                        }
                     }
-                    ' ' -> {}
                     else -> {
-                        number += input[x][y]
+                        number.append(char)
                     }
                 }
             }
-            if (number.isNotEmpty()) readNumbers.add(number.toLong())
-            number = ""
         }
-        println(results)
         return results.sum()
     }
 
@@ -58,13 +61,5 @@ object Day06 : Day {
         return input.map { line ->
             line.trim().split(Regex("""\s+""")).map { it.toInt() }
         }
-    }
-
-    private fun Iterable<Long>.multiply(): Long {
-        var product: Long = 1
-        for (factor in this) {
-            product *= factor
-        }
-        return product
     }
 }
