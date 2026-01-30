@@ -1,26 +1,28 @@
 package aoc2025.solutions
 
 object Day07: Day {
+    data class State(var beams: Set<Int>, var counter: Int)
+
     override fun solvePartOne(input: List<String>): Number {
         val startingIndex = input[0].indexOfFirst { it == 'S' }
-        var counter = 0
-        val beamAt = BooleanArray(input[0].length) { false }
-        beamAt[startingIndex] = true
+        val state = State(mutableSetOf(startingIndex), 0)
 
-        (1..<input.size).forEach { i ->
-            val line = input[i]
-            beamAt.forEachIndexed { index, _ ->
-                if (line[index] == '^' && beamAt[index]) {
+        val finalState = input.drop(1).fold(state) { currentState, line ->
+            val nextBeams = mutableSetOf<Int>()
+            var counter = currentState.counter
+            currentState.beams.forEach {
+                if (line[it] == '^') {
                     counter++
-                    beamAt[index] = false
-                    beamAt[index+1] = true
-                    beamAt[index-1] = true
+                    if (it < line.length-1) nextBeams.add(it+1)
+                    if (it > 0) nextBeams.add(it-1)
+                } else {
+                    nextBeams.add(it)
                 }
             }
-
+            State(nextBeams, counter)
         }
 
-        return counter
+        return finalState.counter
     }
 
     override fun solvePartTwo(input: List<String>): Number {
