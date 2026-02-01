@@ -49,8 +49,10 @@ object Day07: Day {
             currentState.timelinesAtIndex.forEach {
                 when(line[it.key]) {
                     '^' -> {
-                        newMap[it.key - 1] = (newMap[it.key - 1]?.plus(it.value)) ?: it.value
-                        newMap[it.key + 1] = (newMap[it.key + 1]?.plus(it.value)) ?: it.value
+                        if(it.key - 1 in line.indices)
+                            newMap.merge(it.key - 1, it.value, Long::plus)
+                        if(it.key + 1 in line.indices)
+                            newMap.merge(it.key + 1, it.value, Long::plus)
                     }
                     else -> newMap[it.key] = (newMap[it.key]?.plus(it.value)) ?: it.value
                 }
