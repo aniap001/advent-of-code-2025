@@ -1,6 +1,5 @@
 package aoc2025.solutions
 
-import aoc2025.solutions.Day07.solvePartOne
 import org.junit.jupiter.api.Assertions.*
 import kotlin.test.Test
 
@@ -26,8 +25,13 @@ class Day07Test {
     @Test
     fun `Part One returns expected result`() {
 
-        val result = solvePartOne(testInput)
+        val result = Day07.solvePartOne(testInput)
         assertEquals(21, result)
     }
+    @Test
+    fun `Part Two returns expected result`() {
 
+        val result = Day07.solvePartTwo(testInput)
+        assertEquals(40L, result)
+    }
 }

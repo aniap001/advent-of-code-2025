@@ -8,15 +8,16 @@ package aoc2025.solutions
  */
 
 
-data class State(val beams: Set<Int>, val counter: Int)
+data class BeamState(val beams: Set<Int>, val counter: Int)
+data class TimelineState(val timelinesAtIndex: Map<Int, Long>)
 
 object Day07: Day {
 
     override fun solvePartOne(input: List<String>): Number {
         val startingIndex = input[0].indexOfFirst { it == 'S' }
-        val state = State(setOf(startingIndex), 0)
+        val beamState = BeamState(setOf(startingIndex), 0)
 
-        val finalState = input.drop(1).fold(state) { currentState, line ->
+        val finalState = input.drop(1).fold(beamState) { currentState, line ->
             val splitsInThisStep = currentState.beams.count { line[it] == '^'}
             val nextBeams = currentState.beams.flatMap { it.changeBeamPositions(line) }.toSet()
             currentState.copy(
@@ -26,6 +27,8 @@ object Day07: Day {
         }
         return finalState.counter
     }
+
+
 
     private fun Int.changeBeamPositions(line: String): List<Int>{
         return when(line[this]) {
@@ -38,6 +41,22 @@ object Day07: Day {
     }
 
     override fun solvePartTwo(input: List<String>): Number {
-        TODO("Not yet implemented")
+        val startingIndex = input[0].indexOfFirst { it == 'S' }
+        val state = TimelineState(mapOf(startingIndex to 1L))
+
+        val finalState = input.drop(1).fold(state) { currentState, line ->
+            val newMap = mutableMapOf<Int, Long>()
+            currentState.timelinesAtIndex.forEach {
+                when(line[it.key]) {
+                    '^' -> {
+                        newMap[it.key - 1] = (newMap[it.key - 1]?.plus(it.value)) ?: it.value
+                        newMap[it.key + 1] = (newMap[it.key + 1]?.plus(it.value)) ?: it.value
+                    }
+                    else -> newMap[it.key] = (newMap[it.key]?.plus(it.value)) ?: it.value
+                }
+            }
+            currentState.copy(timelinesAtIndex = newMap)
+        }
+        return finalState.timelinesAtIndex.values.sum()
     }
 }
