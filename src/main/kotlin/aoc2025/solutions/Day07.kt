@@ -1,5 +1,13 @@
 package aoc2025.solutions
 
+/***
+ *
+ * Day 7 - Use fold function to track the position of the beams and a beam-split counter
+ *         as we move through the lines
+ *
+ */
+
+
 data class State(val beams: Set<Int>, val counter: Int)
 
 object Day07: Day {
@@ -22,8 +30,8 @@ object Day07: Day {
     private fun Int.changeBeamPositions(line: String): List<Int>{
         return when(line[this]) {
             '^' -> listOfNotNull(
-                        if (this + 1 in line.indices) this + 1 else null,
-                        if (this - 1 in line.indices) this - 1 else null
+                (this + 1).takeIf { it in line.indices },
+                        (this - 1).takeIf { it in line.indices }
                     )
             else -> listOf(this)
         }
