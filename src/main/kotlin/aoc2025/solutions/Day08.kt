@@ -2,89 +2,68 @@ package aoc2025.solutions
 
 object Day08 : Day {
     override fun solvePartOne(input: List<String>): Number {
-        val points = input.map { convertToPoint(it) }
-        val distances = generateDistanceMap(points)
+        val (distances, _) = setup(input)
         val circuits = mutableListOf<MutableSet<Point>>()
-        distances.take(1000)
+        distances.take(10)
             .forEach { (_, p1, p2) ->
-                val firstSet = circuits.find { it.contains(p1) }
-                val secondSet = circuits.find { it.contains(p2) }
-                when {
-                    firstSet != null && secondSet != null && firstSet != secondSet -> {
-                        firstSet.addAll(secondSet)
-                        circuits.remove(secondSet)
-                    }
-                    firstSet == null && secondSet == null -> {
-                        circuits.add(mutableSetOf(p1, p2))
-                    }
-                    firstSet != null && secondSet == null -> {
-                        firstSet.add(p2)
-                    }
-                    firstSet == null && secondSet != null -> {
-                        secondSet.add(p1)
-                    }
-                }
+                addPointsToCircuits(circuits, p1, p2)
             }
-
         circuits.sortByDescending { it.size }
         return circuits
             .take(3).fold(1L) { sum, set -> sum * set.size }
     }
 
     override fun solvePartTwo(input: List<String>): Number {
-        val numberOfItems = input.size
-        val points = input.map { convertToPoint(it) }
-        val distances = generateDistanceMap(points)
+        val (distances, numberOfItems) = setup(input)
         val circuits = mutableListOf<MutableSet<Point>>()
         var x1 = 0
         var x2 = 0
 
         for ((_, p1, p2) in distances) {
-            val firstSet = circuits.find { it.contains(p1) }
-            val secondSet = circuits.find { it.contains(p2) }
-            when {
-                firstSet != null && secondSet != null && firstSet != secondSet -> {
-                    firstSet.addAll(secondSet)
-                    circuits.remove(secondSet)
-                }
-                firstSet == null && secondSet == null -> {
-                    circuits.add(mutableSetOf(p1, p2))
-                }
-                firstSet != null && secondSet == null -> {
-                    firstSet.add(p2)
-                }
-                firstSet == null && secondSet != null -> {
-                    secondSet.add(p1)
-                }
-            }
+            addPointsToCircuits(circuits, p1, p2)
             x1 = p1.x
             x2 = p2.x
             if (circuits.size == 1 && circuits[0].size == numberOfItems){
                 break
             }
         }
-
         return x1.toLong() * x2.toLong()
     }
 
-    private fun generateDistanceMap(points: List<Point>): List<Triple<Long, Point, Point>> {
-        val results = mutableListOf<Triple<Long, Point, Point>>()
+    private fun setup(input: List<String>) = input
+        .map { convertToPoint(it) }
+        .let { points -> generateDistanceMap(points) to points.size }
 
-        for (i in points.indices) {
-            for (j in i + 1 until points.size) {
-                val p1 = points[i]
-                val p2 = points[j]
-                val distance = calculateDistanceBetween(p1, p2)
-                results.add(Triple(distance,p1, p2))
+    private fun addPointsToCircuits(
+        circuits: MutableList<MutableSet<Point>>,
+        p1: Point,
+        p2: Point
+    ) {
+        val firstSet = circuits.find { p1 in it }
+        val secondSet = circuits.find { p2 in it }
+        when {
+            firstSet != null && secondSet != null && firstSet !== secondSet -> {
+                firstSet.addAll(secondSet)
+                circuits.remove(secondSet)
             }
+            firstSet != null -> firstSet.add(p2)
+            secondSet != null -> secondSet.add(p1)
+            else -> circuits.add(mutableSetOf(p1, p2))
         }
-        return results.sortedBy { it.first }
     }
 
-    private fun convertToPoint(inputLine: String): Point {
-        return inputLine.split(",").let {
-            Point(it[0].toInt(), it[1].toInt(), it[2].toInt())
+    private fun generateDistanceMap(points: List<Point>) = buildList {
+        for (i in points.indices) {
+            for (j in i + 1 until points.size) {
+                add(Triple(calculateDistanceBetween(points[i], points[j]),points[i], points[j]))
+            }
         }
+    }.sortedBy { it.first }
+
+    private fun convertToPoint(inputLine: String): Point {
+        return inputLine.split(",")
+            .map { it.toInt() }
+            .let { (x, y, z) -> Point(x, y, z) }
     }
 
     private fun calculateDistanceBetween(p1: Point, p2: Point): Long {
