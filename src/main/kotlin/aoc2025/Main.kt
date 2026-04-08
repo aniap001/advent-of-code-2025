@@ -5,7 +5,7 @@ import aoc2025.solutions.utils.readInput
 
 fun main() {
 
-    println("The result is : ${Day08.solvePartOne(readInput("day8"))}")
+    println("The result is : ${Day08.solvePartTwo(readInput("day8"))}")
 
 }
 

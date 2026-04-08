@@ -32,4 +32,11 @@ class Day08Test {
         val result = Day08.solvePartOne(testInput)
         assertEquals(40L, result)
     }
+
+    @Test
+    fun `Part Two returns expected result`() {
+
+        val result = Day08.solvePartTwo(testInput)
+        assertEquals(25272L, result)
+    }
 }

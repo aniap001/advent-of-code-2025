@@ -32,7 +32,39 @@ object Day08 : Day {
     }
 
     override fun solvePartTwo(input: List<String>): Number {
-        TODO("Not yet implemented")
+        val numberOfItems = input.size
+        val points = input.map { convertToPoint(it) }
+        val distances = generateDistanceMap(points)
+        val circuits = mutableListOf<MutableSet<Point>>()
+        var x1 = 0
+        var x2 = 0
+
+        for ((_, p1, p2) in distances) {
+            val firstSet = circuits.find { it.contains(p1) }
+            val secondSet = circuits.find { it.contains(p2) }
+            when {
+                firstSet != null && secondSet != null && firstSet != secondSet -> {
+                    firstSet.addAll(secondSet)
+                    circuits.remove(secondSet)
+                }
+                firstSet == null && secondSet == null -> {
+                    circuits.add(mutableSetOf(p1, p2))
+                }
+                firstSet != null && secondSet == null -> {
+                    firstSet.add(p2)
+                }
+                firstSet == null && secondSet != null -> {
+                    secondSet.add(p1)
+                }
+            }
+            x1 = p1.x
+            x2 = p2.x
+            if (circuits.size == 1 && circuits[0].size == numberOfItems){
+                break
+            }
+        }
+
+        return x1.toLong() * x2.toLong()
     }
 
     private fun generateDistanceMap(points: List<Point>): List<Triple<Long, Point, Point>> {
